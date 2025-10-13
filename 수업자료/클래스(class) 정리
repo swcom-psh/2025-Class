@@ -1,0 +1,177 @@
+
+파이썬에서 클래스(Class)는 객체지향 프로그래밍(OOP)의 핵심 개념.
+객체지향이 뭔지 궁금하다면? https://jja2han.tistory.com/330
+
+########################################################################
+1. 클래스란? 
+ - 객체(=object)를 생성하기 위한 설계도 또는 틀
+ - 객체는 클래스에 정의된 속성과 메소드를 가지는 실체화된 인스턴스
+ - 클래스는 속성(데이터)와 메소드(함수)를 포함  
+########################################################################
+
+2. 클래스의 기본 구조
+class ClassName:
+    def __init__(self, parameters):
+        # 속성 초기화
+        self.attribute1 = value1
+        self.attribute2 = value2
+        # ...
+    
+    def method1(self, parameters):
+        # 메소드 구현
+        pass
+    
+    def method2(self, parameters):
+        # 메소드 구현
+        pass
+    # ...
+
+########################################################################
+
+3. 클래스의 주요 개념
+ - 속성(Attribute): 클래스 내에서 정의된 변수로, 객체의 상태나 특성을 나타냄
+ - 메소드(Method): 클래스 내에서 정의된 함수로, 객체의 동작이나 기능을 나타냄
+ - 인스턴스(Instance): 클래스를 사용해 생성된 객체
+ - self: 클래스 내에서 인스턴스 자신을 참조하는 예약어
+
+########################################################################
+
+4. 클래스 사용 예시
+# 클래스 정의
+class Dog:
+    def __init__(self, name, age):
+        self.name = name  # 속성
+        self.age = age    # 속성
+    
+    def bark(self):      # 메소드
+        return f"{self.name} says Woof!"        
+# 클래스 인스턴스 생성
+my_dog = Dog("Buddy", 3)
+# 메소드 호출
+print(my_dog.bark())  # 출력: Buddy says Woof!
+
+########################################################################
+
+5.클래스 상속
+ - 기존 클래스(부모 클래스)를 기반으로 새로운 클래스(자식 클래스)를 생성
+ - 자식 클래스는 부모 클래스의 속성과 메소드를 물려받아 재사용 가능
+ - 추가적인 속성과 메소드를 정의하여 확장 가능
+# 클래스 상속 예시
+# 부모 클래스 정의
+class Animal:
+    def __init__(self, species):
+        self.species = species
+    
+    def make_sound(self):
+        return "Some sound"
+
+# 자식 클래스 정의
+class Cat(Animal):
+    def __init__(self, name, age):
+        super().__init__("Cat")  # 부모 클래스의 __init__ 호출
+        self.name = name
+        self.age = age
+    
+    def make_sound(self):  # 메소드 오버라이딩
+        return f"{self.name} says Meow!"    
+
+# 자식 클래스 인스턴스 생성
+my_cat = Cat("Whiskers", 2) 
+print(my_cat.make_sound())  # 출력: Whiskers says Meow!
+# 부모 클래스의 속성도 사용 가능
+print(my_cat.species)  # 출력: Cat
+
+########################################################################
+
+6. 클래스와 객체지향 프로그래밍의 장점
+ - 코드 재사용성 향상
+ - 코드의 구조화 및 조직화
+ - 유지보수 용이
+ - 현실 세계 모델링에 적합
+ ##########################################################################
+
+# Ursina의 Entity 클래스를 상속받아 새로운 클래스를 정의하는 예시
+
+from ursina import *
+app = Ursina()
+class Player(Entity):  # Entity 클래스를 상속받아 Player 클래스 정의
+    def __init__(self, name, position):
+        super().__init__(   # 부모 클래스의 __init__ 호출
+            model='cube',
+            color=color.blue,
+            scale=(1,2,1),
+            position=position
+        )
+        self.name = name  # 추가 속성 정의
+        self.health = 100  # 추가 속성 정의
+    
+    def move(self, direction):
+        self.position += direction  # 위치 변경 메소드
+    
+    def take_damage(self, amount):
+        self.health -= amount  # 체력 감소 메소드
+        if self.health <= 0:
+            self.die()
+    
+    def die(self):
+        print(f"{self.name} has died.")
+        self.enabled = False  # 객체 비활성화
+# Player 클래스 인스턴스 생성
+player1 = Player("Hero", position=(0,0,0))
+# 메소드 호출
+player1.move(Vec3(1,0,0))
+print(player1.position)  # 출력: (1, 0, 0)
+player1.take_damage(20)
+print(player1.health)  # 출력: 80
+player1.take_damage(80)  # 출력: Hero has died.
+# Ursina 앱 실행
+app.run()
+# Entity 클래스의 주요 속성들
+( 속성값 종류
+1. position = (x, y, z) : 객체의 좌표를 설정
+2. rotaion = 값값: 회전의 각도
+3. scale = 값: 크기
+4. model = 'cube', 'shpere', 'plane', 'circle' :모델형태
+5. color = color.red, blue, green... : 색깔
+6. texture = 'white_cube', 'brick',  : 텍스쳐
+7. collider = 'mesh', 'box' : 충돌판정
+8. visible = T/F :보이게 안보이게
+)
+
+# Entity 클래스의 주요 메소드들
+( 메소드 종류   
+1. __init__() : 객체 초기화 메소드
+2. update() : 매 프레임마다 호출되는 메소드
+3. input(key) : 키 입력 처리 메소드
+4. destroy() : 객체 제거 메소드
+5. look_at(target) : 특정 위치를 바라보게 하는 메소드
+6. add_script(script) : 스크립트 추가 메소드
+7. remove_script(script) : 스크립트 제거 메소드
+8. animate(property, value, duration) : 속성 애니메이션 메소드
+)
+# Entity 클래스를 상속받아 새로운 클래스를 정의하는 예시
+from ursina import *
+app = Ursina()
+class CustomEntity(Entity):  # Entity 클래스를 상속받아 CustomEntity 클래스 정의
+    def __init__(self, name, position):
+        super().__init__(  # 부모 클래스의 __init__ 호출
+            model='sphere',
+            color=color.red,
+            scale=1,
+            position=position
+        )
+        self.name = name  # 추가 속성 정의
+    
+    def change_color(self, new_color):
+        self.color = new_color  # 색상 변경 메소드
+    
+    def grow(self, amount):
+        self.scale += amount  # 크기 증가 메소드
+# CustomEntity 클래스 인스턴스 생성
+entity1 = CustomEntity("MySphere", position=(2,0,0))
+# 메소드 호출
+entity1.change_color(color.green)
+print(entity1.color)  # 출력: color.green
+entity1.grow(0.5)
+print(entity1.scale)  # 출력: 1.5
+app.run()
