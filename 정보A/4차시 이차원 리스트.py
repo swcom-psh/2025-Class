@@ -7,7 +7,7 @@ EditorCamera()
 
 def input(key):
     if key == 'escape':
-        application.quit()
+        application.quit()  
 
 wall = [
     [11,21,31,41,51,61,71,81,91,10,11,__,13,14,15,16,17,18,19,20],

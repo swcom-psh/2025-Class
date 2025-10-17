@@ -58,7 +58,7 @@ class Planet(Entity):
             self.pi.rotation_y += self.orbit * time.dt
 
 
-Planet('Sun', sun_texture, (0,0,0), (radius * 2), 1.9969)
+Planet('Sun', sun_texture, (0,0,0), (radius * 2) * 54, 1.9969)
 Planet('mercury', mercury_texture, dis * 0.4, (radius * 2) * 0.4, 0.003, 47.87 )
 Planet('venus', venus_texture, dis * 0.7, (radius * 2) * 0.9, 0.0018, 35)
 Planet('earth', earth_texture, dis * 1, radius * 2, 0.4651,29)
