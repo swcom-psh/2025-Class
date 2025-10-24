@@ -28,7 +28,7 @@ dis = Vec3(10, 0, 0)
 
 class Planet(Entity):
     def __init__(self, name, texture, position, scale, rotation_speed, orbit = 0):
-        super().__init__(
+        super().__init__( # 부모(Entity)의 기능을 받아온다.
             model = 'sphere',
             texture = texture,
             position = position,
@@ -47,14 +47,12 @@ class Planet(Entity):
             name = pivot_name,
             position = (0,0,0),            
         )
-
         self.parent = self.pi
 
 
     def update(self):
         self.rotation_y += self.rotation_speed * time.dt
         if hasattr(self, 'pi'):
-
             self.pi.rotation_y += self.orbit * time.dt
 
 
