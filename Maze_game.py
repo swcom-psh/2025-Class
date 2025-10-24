@@ -18,7 +18,6 @@ class Player(FirstPersonController):
                origin = (-7,-18.5),
                color = color.rgba(255, 255, 255, 100)               
           )
-          
 
 class Coin(Entity):
      def __init__(self,i,j):
