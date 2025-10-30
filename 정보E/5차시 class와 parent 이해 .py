@@ -9,31 +9,34 @@ def input(key):
 
 
 class Planet(Entity):
-    def __init__(self):
+    def __init__(self, tex, sc, pos, spin, orbit):
         super().__init__(
             model = 'sphere',
-            texutre = '',
-            scale = 5,
-            position = (0,0,0)
+            texture = tex,
+            scale = sc,
+            position = pos,
+            spin = spin,
+            orbit = orbit
         )
+        self.pivot()
+    
+    def pivot(self):
+        self.pi = Entity(position = (0,0,0))
+        self.parent = self.pi
 
         
+    def update(self):
+        #self는 클래스 내부에서 생성되는 변수 등을
+        #클래스 자기자신 내부에서 접근하기 위함
+        self.rotation_y += self.spin
+        self.pi.rotation_y += self.orbit
 
 
-Planet()
 
 
 
-earth = Entity(model = 'sphere', texture ='textures/earth.jpg', scale = 5, position = (0,0,0))
-earth = Entity(model = 'sphere', texture ='textures/earth.jpg', scale = 5, position = (0,0,0))
-earth = Entity(model = 'sphere', texture ='textures/earth.jpg', scale = 5, position = (0,0,0))
-earth = Entity(model = 'sphere', texture ='textures/earth.jpg', scale = 5, position = (0,0,0))
-
-def update(): #업데이트 라는 함수
-    #이 안에 있는 코드는 프로그램 실행 후 무한 반복됨.
-    earth.rotation_y += 5
-    #earth.rotation_y = earth.rotation_y + 5
-    earth.position += Vec3(0.5, 0, 0)
+earth = Planet(tex = 'textures/earth.jpg', sc = 5, pos = (0,0,0), spin = 5, orbit = 5)
+sun = Planet(tex = 'textures/sun.jpg', sc = 5, pos = (10,0,0), spin = 150, orbit = 0)
 
 
 
