@@ -1,0 +1,24 @@
+파이썬 프로그래밍에서 자신이 원하는 다양한 형태의 함수와 클래스를 만들 수 있으나,
+
+ursina에서 제공하는 update() 함수는 매 프레임마다 자동으로 호출되는 특별한 함수이다.
+이를 활용하여 게임 내에서 지속적으로 변화하는 요소들을 처리할 수 있다.
+# 예시: update() 함수 활용
+from ursina import *
+app = Ursina()
+cube = Entity(model='cube', color=color.red, scale=2)
+def update():
+    cube.rotation_y += 1  # 매 프레임마다 큐브를 회전시킴
+app.run()
+
+위 예시를 활용하면 내가 Entity를 활용해 생성해낸 객체를 다양한 형태로
+매 프레임마다 반복적인 변화를 줄 수 있다.
+# 예시: update() 함수에서 키 입력 처리
+from ursina import *
+app = Ursina()
+player = Entity(model='cube', color=color.blue, scale=1)
+def update():
+    if held_keys['a']:  # 'a' 키가 눌려져 있는 동안
+        player.x -= 0.1  # 플레이어를 왼쪽으로 이동
+    if held_keys['d']:  # 'd' 키가 눌려져 있는 동안
+        player.x += 0.1  # 플레이어를 오른쪽으로 이동
+app.run()
