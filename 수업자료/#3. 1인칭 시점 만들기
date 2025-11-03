@@ -1,9 +1,0 @@
-우르시나에서는 1인칭 시점을 제공한다. 다만, 사용을 위해서는 해당되는 라이브러리를 가져와야 함.
-
-#예시. 1인칭시점
-
-from ursina.prefabs.first_person_controller import FirstPersonController #라이브러리 가져오기
-
-player = FirstPersonController() #1인칭 시점 화면 가져오기
-
-ground = Entity()

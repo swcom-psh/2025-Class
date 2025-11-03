@@ -1,0 +1,21 @@
+우르시나에서는 1인칭 시점을 제공한다. 다만, 사용을 위해서는 해당되는 라이브러리를 가져와야 함.
+
+#예시. 1인칭시점
+
+from ursina.prefabs.first_person_controller import FirstPersonController #라이브러리 가져오기
+
+app = Ursina()
+
+player = FirstPersonController(
+    position=(0,1,0), #플레이어의 시작 좌표도 설정할 수 있고
+    speed=5, #이동 속도 설정 가능
+    jump_height=2 #점프 높이도 설정할 수 있음.
+) #1인칭 시점 화면 가져오기
+
+ground = Entity(
+    model='plane',
+    scale=(100, 1, 100),
+    texture='white_cube',
+    collider='box') #반드시 충돌체가 있어야 함.
+
+app.run()
