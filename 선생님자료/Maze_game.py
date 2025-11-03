@@ -2,7 +2,7 @@ from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 app = Ursina()
-
+#EditorCamera()
 __ = False
 
 class Player(FirstPersonController):
@@ -11,7 +11,8 @@ class Player(FirstPersonController):
                speed = 10,
                model = 'cube',
                collider = 'box',
-               scale = 1
+               scale = 1,
+               position = (0,0,0)
           )
           self.coins = 0 #플레이어의 코인 추가
           self.cointext = Text(
@@ -91,7 +92,7 @@ class MonsterX(Entity): #클래스 MonsterX를 생성합니다.
                     model = 'assets/enemy.obj',
                     texture = 'assets\EnemyTexture.png',
                     scale = 0.5,
-                    position = (x * 5, 1, z * 5),
+                    position = (x * 5, 0, z * 5),
                     collider = 'box',
                     rotation = (0, 90, 0)
                )
@@ -125,7 +126,7 @@ def input(key):
      if key == 'escape':
           application.quit()
 
-EditorCamera()
+
 player = Player()
 
 
@@ -173,9 +174,9 @@ for i in range(len(MAP)):
                     continue
 
                wall = Entity(                
-                    model = 'plane',
+                    model = 'cube',
                     color = '#d1a432',
-                    position = (i * 5, 1.5, j * 5),
+                    position = (i * 5, 0, j * 5),
                     scale = (5,5,5),
                     collider = 'box',
                     texture = 'brick'
@@ -188,7 +189,7 @@ for i in range(len(MAP)):
 Ground = Entity(
      model = 'plane',
      texture = 'grass',  #질감 종류: brick(벽돌), grass(풀밭), white_cube(하얀큐브), noise(노이즈패턴), sky_sunset(노을이지는하늘), shore(물가풍경)
-     position = (50,-5,50),
+     position = (50,-1,50),
      scale = (150,1,150),
      collider = 'mesh'
 )
