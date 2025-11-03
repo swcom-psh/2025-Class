@@ -1,68 +1,36 @@
 from ursina import *
-import math
 
 app = Ursina()
 EditorCamera()
 
+
+
+
 def input(key):
     if key == 'escape':
         application.quit()
+    if key == 'space':
+        cube.color = color.random_color()
 
-# Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
-class Planet(Entity):
-    def __init__(self, texture, position, a, speed, orbit=0, name=''):
-        super().__init__(
-            model='sphere',
-            texture=texture,
-            position=position,
-            scale=a,
-            speed=speed,
-            parent=scene
-        )
-        self.orbit = orbit
-        self.name = name
-        self.angle = random.uniform(0, 360)
-        self.pivot()
 
-    def pivot(self):
-        self.pi = Entity(position=(0, 0, 0))
-        self.parent = self.pi
+cube = Entity(model = 'cube', scale = 5, position = (0,0,0), color = color.red, collider='box')
+ball = Entity(model='sphere', scale=2, position=(2,5,0), color=color.blue, collider='sphere')
 
-    def update(self):
-        # --- 공통 자전 ---
-        self.rotation_y += self.speed * time.dt
+cube.animate('y', 3, duration=1) # y축으로 3만큼 올라가는 애니메이션
 
-        # --- 일반 행성은 원형 공전 ---
-        if self.name != 'Mars':
-            self.pi.rotation_y += self.orbit * time.dt
+cube.animate_rotation((0,180,0), duration=2) # y축으로 180도 회전하는 애니메이션
+cube.shake(magnitude=2, duration=10) # 흔들리는 애니메이션
 
-        # --- 화성만 타원 + 기울기 반영 ---
-        else:
-            self.angle += self.orbit * 5   # 공전 속도 조절
-            a = 40                # 태양으로부터 평균 거리
-            e = 0.0934            # 이심률
-            b = a * (1 - e)       # 타원 단축 비율
-            inc = math.radians(1.85)  # 궤도 기울기 (°→rad)
 
-            # 타원 궤도 좌표 계산
-            self.x = math.cos(math.radians(self.angle)) * a
-            self.z = math.sin(math.radians(self.angle)) * b * math.cos(inc)
-            self.y = math.sin(math.radians(self.angle)) * b * math.sin(inc)
+if cube.intersects().hit:
+    print('충돌 발생!')
 
-# --------------------------
-# 행성 생성
-# --------------------------
-Planet(texture='textures/sun.jpg', position=(0, 0, 0), a=5, speed=10, orbit=2.5, name='Sun')
-Planet(texture='textures/Mercury.jpg', position=(10, 0, 0), a=5, speed=0.7, orbit=3.5, name='Mercury')
-Planet(texture='textures/Venus.jpg', position=(20, 0, 0), a=5, speed=0.8, orbit=5.5, name='Venus')
-Planet(texture='textures/Earth.jpg', position=(30, 0, 0), a=5, speed=1.2, orbit=7, name='Earth')
-Planet(texture='textures/Mars.jpg', position=(40, 0, 0), a=5, speed=2, orbit=2, name='Mars')  # ★ 수정된 부분
-Planet(texture='textures/Jupiter.jpg', position=(50, 0, 0), a=5, speed=3.5, orbit=8.5, name='Jupiter')
-Planet(texture='textures/Saturn.jpg', position=(60, 0, 0), a=5, speed=8.5, orbit=9.5, name='Saturn')
-Planet(texture='textures/Uranus.jpg', position=(70, 0, 0), a=5, speed=9.5, orbit=10.5, name='Uranus')
-Planet(texture='textures/Neptune.jpg', position=(80, 0, 0), a=5, speed=10, orbit=11.5, name='Neptune')
+def update():
+    if mouse.hovered_entity == cube:
+        cube.color = color.random_color()
+    else:
+        cube.color = color.white
+
 
 app.run()
 
-
-#https://blog.naver.com/notenter9/220798073644

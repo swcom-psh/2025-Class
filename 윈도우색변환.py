@@ -1,0 +1,16 @@
+from ursina import *
+
+app = Ursina()
+EditorCamera()
+
+
+window.color = color.rgb(0, 50, 100)     # 어두운 파란색
+# 또는
+window.color = color.azure               # 기본 색 이름으로도 가능
+# 혹은
+window.color = color.hex('#ffcc00')      # HEX 코드 사용 가능
+
+window.size = (1280, 720)
+
+
+app.run()
