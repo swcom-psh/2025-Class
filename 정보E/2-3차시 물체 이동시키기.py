@@ -36,15 +36,6 @@ def update():
         if abs(some.z) > 100:
             some.dis.z *= -1
 
-        for a in somethings:
-            if some == a: #나 자신을 만났을 땐 넘어가세요.
-                continue
-
-            if a.intersects(some).hit:
-                a.dis *= -1
-                some.dis *= -1
-
-
         
         
 
