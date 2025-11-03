@@ -18,5 +18,7 @@ def update():
     cube.y -= time.dt * 5  #큐브가 아래로 떨어집니다.
     if cube.y < -20:  #만약 큐브가 특정 높이 이하로 떨어지면
         cube.y = 0  #큐브의 위치를 다시 위로 올립니다.
+        cube.enabled = False #만약 특정 조건이 참이라면 큐브를 비활성화합니다.
+    
 
 app.run()
