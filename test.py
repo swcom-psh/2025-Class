@@ -1,33 +1,60 @@
 from ursina import *
+from random import uniform
 
 app = Ursina()
+window.color = color.lime
 EditorCamera()
 
+# ----- 필드, 골대, 공 생성 -----
+field = Entity(model='plane', texture='grass', scale=(30, 1, 50), color=color.green)
+goal_post = Entity(model='cube', color=color.white, scale=(6, 4, 0.2), position=(0, 2, 25))
+crossbar = Entity(model='cube', color=color.white, scale=(6, 0.2, 0.2), position=(0, 4, 25))
+goal_left = Entity(model='cube', color=color.white, scale=(0.2, 4, 0.2), position=(-3, 2, 25))
+goal_right = Entity(model='cube', color=color.white, scale=(0.2, 4, 0.2), position=(3, 2, 25))
 
-ceiling = Entity(model='cube', scale=(20,0.1,10), position=(0,0,0), color=color.gray)
+ball = Entity(model='sphere', color=color.white, scale=1, position=(0, 1, -15), collider='sphere')
+score_text = Text(text='Score: 0', position=(-.85, .45), scale=2, color=color.black)
 
-pivot = Entity(position=(0,0,0))        
-L = 10                                  
+# ----- 변수 설정 -----
+speed = Vec3(0, 0, 0)
+gravity = -9.8
+in_air = False
+score = 0
 
-rod = Entity(parent=pivot, model='cube',
-             scale=(0.12, L, 0.12),
-             origin_y=0.5,               # 윗끝이 회전 원점
-             position=(0, 0, 0),
-             color=color.azure)
-
-ball = Entity(parent=pivot, model='sphere',
-              scale=1.2,
-              position=(0, -L, 0),
-              color=color.white)
-
-
-angle = 15                               # 초기 각도(도)
-
+def input(key):
+    global speed, in_air
+    # 스페이스바로 공을 찬다 (포물선)
+    if key == 'space' and not in_air:
+        in_air = True
+        speed = Vec3(uniform(-1, 1), 6, 25)  # 방향, 높이, 거리
 
 def update():
-    global angle
-    t = time.time()
-    theta = angle * cos(sqrt(9.8/L) * t)   # 단진자의 각도(도)
-    pivot.rotation_z = theta                  # 진자 회전
+    global speed, in_air, score
+
+    # 공의 움직임
+    if in_air:
+        speed.y += gravity * time.dt
+        ball.position += speed * time.dt
+
+        # 바닥 닿으면 멈추기
+        if ball.y <= 1:
+            ball.y = 1
+            speed = Vec3(0, 0, 0)
+            in_air = False
+
+        # 골대와 충돌 시 골 판정
+        if (abs(ball.x) < 2.5 and 0.5 < ball.y < 3.5 and 24.5 < ball.z < 25.5):
+            score += 1
+            score_text.text = f'Score: {score}'
+            print('GOAL!')
+            goal_post.color = color.yellow
+            invoke(reset_ball, delay=1)
+
+
+def reset_ball():
+    global ball, in_air
+    ball.position = (0, 1, -15)
+    in_air = False
+    goal_post.color = color.white
 
 app.run()
